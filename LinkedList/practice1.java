@@ -1,11 +1,18 @@
-public class practice1{
-    static void fun(Test t){
-            t.print();
-        }
+import java.util.*;
+import java.util.function.Predicate;
+
+public class practice1 {
     public static void main(String[] args){
-        fun(()-> System.out.println("Hello"));
+        List<Integer> al = new ArrayList<>(Arrays.asList(10,29,30,47,50));
+        GFG.printCond(al, x -> x %2 == 0);
     }
 }
-interface Test{
-    void print();
+class GFG {
+    public static void printCond(Collection<Integer> C, Predicate<Integer> p){
+        for(Integer x: C){
+            if(p.test(x)){
+                System.out.println(x + " ");
+            }
+        }
+    }
 }
