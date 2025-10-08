@@ -1,5 +1,5 @@
 import java.util.*;
-class practice {
+class prac2 {
     public static void main(String[] args){
         ArrayList<Integer> num = new ArrayList<>();
         for(int i = 0; i<10; i++){
