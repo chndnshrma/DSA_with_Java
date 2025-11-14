@@ -1,35 +1,21 @@
-// Java Program to reverse a List using Stack
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
-import java.util.*;
-
-class Reverse{
-
-    static void myReverse(List<Integer> list)
-    {
-        Stack<Integer> s = new Stack<Integer>();
-
-        // Push all the elements in the list into the stack.
-        for(Integer j: list)
-            s.push(j);
-
-        // Pop the stack and insert back into the list.
-        for(int i=0; i<list.size(); i++)
-        {
-            list.set(i, s.pop());
-        }
-
+class Reverse {
+    public static void main(String[] args) {
+        List<Integer> lst = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        myRev(lst);
     }
-
-    public static void main (String[] args) {
-
-        List<Integer> list = new ArrayList<Integer>();
-
-        list.add(10);
-        list.add(20);
-        list.add(30);
-
-        myReverse(list);
-
-        System.out.println(list);
+    public static void myRev(List<Integer> lst){
+        Stack<Integer> s = new Stack<>();
+        for(Integer x: lst){
+            s.push(x);
+        }
+        for(int i = 0; i<lst.size();i++){
+            lst.set(i, s.pop());
+        }
+        System.out.println(lst.toString());
     }
 }
