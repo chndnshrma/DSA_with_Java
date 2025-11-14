@@ -9,8 +9,8 @@ class Reverse{
         Stack<Integer> s = new Stack<Integer>();
 
         // Push all the elements in the list into the stack.
-        for(Integer x: list)
-            s.push(x);
+        for(Integer e: list)
+            s.push(e);
 
         // Pop the stack and insert back into the list.
         for(int i=0; i<list.size(); i++)
