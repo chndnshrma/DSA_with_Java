@@ -1,13 +1,21 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class Span {
     public static void main(String[] args){
-        int[] arr = {18,12,13,14,11,16};
+        int[] arr = {60,10,20,40,35,30,50,70,55};
+       Deque<Integer> stack = new ArrayDeque<Integer>();
+       stack.push(0);
+       int span = 1;
+       System.out.print(span + " ");
 
-        for(int i = 0;i < arr.length; i++){
-            int span = 1;
-            for(int j = i-1; j>=0 && arr[j] <= arr[i]; j--){
-                span++;
-            }
-            System.out.print(span + " ");
-        }
+       for(int i = 0; i<arr.length;i++){
+           while(stack.isEmpty() == false && arr[stack.peek()] <= arr[i]){
+                stack.pop();
+           }
+           span = (stack.isEmpty() ? (i+i) : (i-stack.peek()));
+           System.out.print(span + " ");
+           stack.push(i);
+       }
     }
 }
