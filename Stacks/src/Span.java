@@ -3,7 +3,7 @@ import java.util.Deque;
 
 public class Span {
     public static void main(String[] args){
-        int[] arr = {60,10,20,40,35,30,50,70,55};
+        int[] arr = {60,10,20,40,35,30,5,70,55};
        Deque<Integer> stack = new ArrayDeque<Integer>();
        stack.push(0);
        int span = 1;
