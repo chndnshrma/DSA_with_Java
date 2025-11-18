@@ -7,7 +7,7 @@ public class Balance {
     String str = "({}[((]))";
         System.out.println(isBalanced(str));
     }
-    public static boolean isBallanced(String str){
+    public static boolean isBalanced(String str){
         Deque<Character> stack = new ArrayDeque<Character>();
 
         for(int i = 0; i<str.length(); i++){
