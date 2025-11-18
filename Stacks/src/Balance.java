@@ -24,7 +24,7 @@ public class Balance {
                 }
             }
         }
-        return (stack.isEmpty() == true);
+        return (stack.isEmpty());
     }
    public static boolean isMatching(char a, char b){
         return (
