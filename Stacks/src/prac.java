@@ -17,9 +17,7 @@ public class prac {
             int median = findMedian(a, b, c);
             System.out.println("final " + median);
         }
-
         sc.close();
-
     }
     public static int findMedian(int a, int b, int c) {
         if((a >= b && a <= c) || (a >= c && a <= b)){
