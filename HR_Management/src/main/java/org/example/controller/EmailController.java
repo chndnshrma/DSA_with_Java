@@ -8,13 +8,16 @@ import javafx.stage.FileChooser;
 import javafx.concurrent.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.HBox;
 
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EmailController {
 
@@ -29,6 +32,10 @@ public class EmailController {
     @FXML private TextField subjectField;
     @FXML private TextArea messageArea;
 
+    // Attachment Fields
+    @FXML private ListView<File> attachmentsListView;
+    @FXML private Label attachmentsCountLabel;
+
     // Employee Management Fields
     @FXML private TextArea employeesTextArea;
     @FXML private TableView<Employee> employeesTableView;
@@ -40,7 +47,12 @@ public class EmailController {
     @FXML private Label progressLabel;
     @FXML private Button sendButton;
     @FXML private Button testConnectionButton;
+
+    // Statistics Labels
     @FXML private Label employeeCountLabel;
+    @FXML private Label departmentStatsLabel;
+    @FXML private Label validEmailsLabel;
+    @FXML private Label invalidEmailsLabel;
 
     // Quick Setup Buttons
     @FXML private Button gmailSetupButton;
@@ -49,6 +61,7 @@ public class EmailController {
     @FXML private Button office365SetupButton;
 
     private ObservableList<Employee> employees = FXCollections.observableArrayList();
+    private ObservableList<File> attachments = FXCollections.observableArrayList();
     private EmailService emailService;
 
     @FXML
@@ -57,7 +70,37 @@ public class EmailController {
         setupEventHandlers();
 
         employeesTableView.setItems(employees);
-        updateEmployeeCount();
+        attachmentsListView.setItems(attachments);
+
+        // Custom cell factory for attachments list
+        attachmentsListView.setCellFactory(lv -> new ListCell<File>() {
+            @Override
+            protected void updateItem(File file, boolean empty) {
+                super.updateItem(file, empty);
+                if (empty || file == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    HBox hbox = new HBox(10);
+                    hbox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+                    Label nameLabel = new Label(file.getName());
+                    Label sizeLabel = new Label(formatFileSize(file.length()));
+                    sizeLabel.setStyle("-fx-text-fill: #7f8c8d; -fx-font-size: 11px;");
+
+                    Button removeButton = new Button("✕");
+                    removeButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 10px;");
+                    removeButton.setOnAction(e -> removeAttachment(file));
+
+                    hbox.getChildren().addAll(nameLabel, sizeLabel, removeButton);
+                    setGraphic(hbox);
+                    setText(null);
+                }
+            }
+        });
+
+        updateEmployeeStatistics();
+        updateAttachmentsCount();
     }
 
     private void setupDefaultValues() {
@@ -79,13 +122,109 @@ public class EmailController {
         // Real-time employee list parsing
         employeesTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
             parseEmployeesFromText();
-            updateEmployeeCount();
+            updateEmployeeStatistics();
         });
 
         // Search functionality
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             filterEmployees(newValue);
         });
+    }
+
+    // Enhanced Statistics Methods
+    private void updateEmployeeStatistics() {
+        int totalEmployees = employees.size();
+
+        // Count valid and invalid emails
+        int validEmails = 0;
+        int invalidEmails = 0;
+        Set<String> departments = new HashSet<>();
+
+        for (Employee employee : employees) {
+            String cleanEmail = cleanEmailAddress(employee.getEmail());
+            if (isValidEmail(cleanEmail)) {
+                validEmails++;
+            } else {
+                invalidEmails++;
+            }
+
+            if (employee.getDepartment() != null && !employee.getDepartment().trim().isEmpty()) {
+                departments.add(employee.getDepartment());
+            }
+        }
+
+        // Update all statistics labels
+        employeeCountLabel.setText("📊 Total Employees: " + totalEmployees);
+        departmentStatsLabel.setText("🏢 Departments: " + departments.size());
+        validEmailsLabel.setText("✅ Valid Emails: " + validEmails);
+        invalidEmailsLabel.setText("❌ Invalid Emails: " + invalidEmails);
+    }
+
+    private String cleanEmailAddress(String email) {
+        if (email == null) return "";
+        return email.replaceAll("[\\uFEFF-\\uFFFF]", "")
+                .replaceAll("[\\u200B-\\u200D]", "")
+                .replaceAll("[\\uFEFF]", "")
+                .trim()
+                .replaceAll("[^\\x20-\\x7E]", "");
+    }
+
+    private boolean isValidEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+
+    // Attachment Methods
+    @FXML
+    private void addAttachments() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Files to Attach");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Files", "*.*"),
+                new FileChooser.ExtensionFilter("PDF Files", "*.pdf"),
+                new FileChooser.ExtensionFilter("Word Documents", "*.doc", "*.docx"),
+                new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
+                new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png", "*.gif"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
+
+        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(null);
+        if (selectedFiles != null) {
+            for (File file : selectedFiles) {
+                if (!attachments.contains(file)) {
+                    attachments.add(file);
+                    System.out.println("Added attachment: " + file.getName());
+                }
+            }
+            updateAttachmentsCount();
+        }
+    }
+
+    @FXML
+    private void clearAttachments() {
+        attachments.clear();
+        updateAttachmentsCount();
+        showInfo("All attachments cleared");
+    }
+
+    private void removeAttachment(File file) {
+        attachments.remove(file);
+        updateAttachmentsCount();
+        showInfo("Removed attachment: " + file.getName());
+    }
+
+    private void updateAttachmentsCount() {
+        long totalSize = attachments.stream().mapToLong(File::length).sum();
+        attachmentsCountLabel.setText("📎 Attachments: " + attachments.size() + " files (" + formatFileSize(totalSize) + ")");
+    }
+
+    private String formatFileSize(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+        if (bytes < 1024 * 1024 * 1024) return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
+        return String.format("%.1f GB", bytes / (1024.0 * 1024.0 * 1024.0));
     }
 
     // Quick Setup Methods
@@ -121,10 +260,6 @@ public class EmailController {
         showInfo("Office 365 configuration loaded.");
     }
 
-    private void updateEmployeeCount() {
-        employeeCountLabel.setText("📊 Employee Count: " + employees.size());
-    }
-
     @FXML
     private void testConnection() {
         if (!validateSmtpConfig()) return;
@@ -133,9 +268,9 @@ public class EmailController {
         String port = smtpPortField.getText();
         String email = senderEmailField.getText();
         String password = senderPasswordField.getText();
-        boolean useSSL = sslCheckBox.isSelected();  // Get SSL setting
+        boolean useSSL = sslCheckBox.isSelected();
 
-        emailService = new EmailService(host, port, email, password, useSSL);  // Now 5 arguments
+        emailService = new EmailService(host, port, email, password, useSSL);
 
         Task<Boolean> testTask = new Task<Boolean>() {
             @Override
@@ -168,24 +303,41 @@ public class EmailController {
             return;
         }
 
-        // Confirmation dialog
+        // Check attachment size (limit to 25MB for most email providers)
+        long totalAttachmentSize = attachments.stream().mapToLong(File::length).sum();
+        if (totalAttachmentSize > 25 * 1024 * 1024) {
+            showError("❌ Total attachment size exceeds 25MB. Please reduce file sizes.");
+            return;
+        }
+
+        // Confirmation dialog with attachment info
+        StringBuilder confirmationText = new StringBuilder();
+        confirmationText.append("This will send the email to all ").append(employees.size()).append(" employees.");
+
+        if (!attachments.isEmpty()) {
+            confirmationText.append("\n\nAttachments (").append(attachments.size()).append(" files):\n");
+            for (File file : attachments) {
+                confirmationText.append("• ").append(file.getName()).append(" (").append(formatFileSize(file.length())).append(")\n");
+            }
+        }
+
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirm Email Sending");
         confirmation.setHeaderText("Send emails to " + employees.size() + " employees?");
-        confirmation.setContentText("This will send the email to all employees in the list.");
+        confirmation.setContentText(confirmationText.toString());
 
         if (confirmation.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
             return;
         }
 
-        // Initialize email service with all 5 parameters
+        // Initialize email service
         String host = smtpHostField.getText();
         String port = smtpPortField.getText();
         String email = senderEmailField.getText();
         String password = senderPasswordField.getText();
-        boolean useSSL = sslCheckBox.isSelected();  // Get SSL setting
+        boolean useSSL = sslCheckBox.isSelected();
 
-        emailService = new EmailService(host, port, email, password, useSSL);  // Now 5 arguments
+        emailService = new EmailService(host, port, email, password, useSSL);
 
         Task<EmailService.EmailSendResult> sendTask = new Task<EmailService.EmailSendResult>() {
             @Override
@@ -194,6 +346,7 @@ public class EmailController {
                         new ArrayList<>(employees),
                         subjectField.getText(),
                         messageArea.getText(),
+                        new ArrayList<>(attachments), // Pass attachments
                         new EmailService.ProgressCallback() {
                             @Override
                             public void onProgress(double progress, String message) {
@@ -221,7 +374,11 @@ public class EmailController {
             sendButton.setDisable(false);
             testConnectionButton.setDisable(false);
 
-            showSuccess("✅ Email sending completed!\n" + result.getSummary());
+            String successMessage = "✅ Email sending completed!\n" + result.getSummary();
+            if (!attachments.isEmpty()) {
+                successMessage += "\n📎 " + attachments.size() + " files attached to each email";
+            }
+            showSuccess(successMessage);
         });
 
         sendTask.setOnFailed(e -> {
@@ -234,6 +391,94 @@ public class EmailController {
         });
 
         new Thread(sendTask).start();
+    }
+
+    @FXML
+    private void loadFromCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Employee CSV File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                StringBuilder sb = new StringBuilder();
+                employees.clear();
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty() || line.startsWith("#")) continue;
+
+                    String[] parts = line.split(",");
+                    if (parts.length >= 2) {
+                        String email = parts[0].trim();
+                        String name = parts[1].trim();
+                        String department = parts.length > 2 ? parts[2].trim() : "";
+                        String position = parts.length > 3 ? parts[3].trim() : "";
+
+                        employees.add(new Employee(email, name, department, position));
+                        sb.append(email).append(",").append(name);
+                        if (!department.isEmpty()) sb.append(",").append(department);
+                        if (!position.isEmpty()) sb.append(",").append(position);
+                        sb.append("\n");
+                    }
+                }
+
+                employeesTextArea.setText(sb.toString());
+                updateEmployeeStatistics();
+                showSuccess("✅ Loaded " + employees.size() + " employees from CSV");
+
+            } catch (Exception e) {
+                showError("❌ Error loading CSV: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void saveToCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Employee CSV File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                for (Employee employee : employees) {
+                    writer.write(employee.toCSV() + "\n");
+                }
+                showSuccess("✅ Saved " + employees.size() + " employees to CSV");
+            } catch (Exception e) {
+                showError("❌ Error saving CSV: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void clearEmployees() {
+        employees.clear();
+        employeesTextArea.clear();
+        updateEmployeeStatistics();
+        showInfo("Employee list cleared");
+    }
+
+    @FXML
+    private void addSampleData() {
+        String sampleData = "john.doe@company.com,John Doe,IT,Software Developer\n" +
+                "jane.smith@company.com,Jane Smith,HR,Manager\n" +
+                "mike.wilson@company.com,Mike Wilson,Finance,Analyst\n" +
+                "sarah.johnson@company.com,Sarah Johnson,Marketing,Specialist\n" +
+                "robert.brown@company.com,Robert Brown,Operations,Coordinator\n" +
+                "emily.davis@company.com,Emily Davis,Sales,Representative\n" +
+                "david.miller@company.com,David Miller,IT,System Administrator\n" +
+                "lisa.anderson@company.com,Lisa Anderson,HR,Recruiter";
+
+        employeesTextArea.setText(sampleData);
+        showInfo("Sample data added");
     }
 
     // Email validation method
@@ -249,7 +494,7 @@ public class EmailController {
             // Check for invisible characters
             if (email.contains("\uFEFF") || email.contains("\u200B") || email.contains("\u200C") || email.contains("\u200D")) {
                 invalidEmails.add(email + " (contains invisible characters)");
-            } else if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            } else if (!isValidEmail(email)) {
                 invalidEmails.add(email + " (invalid format)");
             } else {
                 validEmails.add(email);
@@ -296,110 +541,30 @@ public class EmailController {
         String port = smtpPortField.getText();
         String email = senderEmailField.getText();
         String password = senderPasswordField.getText();
-        boolean useSSL = sslCheckBox.isSelected();  // Get SSL setting
+        boolean useSSL = sslCheckBox.isSelected();
 
-        EmailService testService = new EmailService(host, port, email, password, useSSL);  // Now 5 arguments
+        EmailService testService = new EmailService(host, port, email, password, useSSL);
 
         Task<Boolean> testTask = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
-                return testService.sendEmailToEmployee(testEmployee, "Test Email", "This is a test email from HR System.");
+                return testService.sendEmailToEmployee(testEmployee, "Test Email", "This is a test email from HR System.", attachments);
             }
         };
 
         testTask.setOnSucceeded(e -> {
             if (testTask.getValue()) {
-                showSuccess("✅ Test email sent successfully!");
+                String successMsg = "✅ Test email sent successfully!";
+                if (!attachments.isEmpty()) {
+                    successMsg += " (" + attachments.size() + " attachments included)";
+                }
+                showSuccess(successMsg);
             } else {
                 showError("❌ Failed to send test email. Check your SMTP configuration.");
             }
         });
 
         new Thread(testTask).start();
-    }
-
-    @FXML
-    private void loadFromCSV() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Employee CSV File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv"),
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                StringBuilder sb = new StringBuilder();
-                employees.clear();
-
-                String line;
-                while ((line = br.readLine()) != null) {
-                    line = line.trim();
-                    if (line.isEmpty() || line.startsWith("#")) continue;
-
-                    String[] parts = line.split(",");
-                    if (parts.length >= 2) {
-                        String email = parts[0].trim();
-                        String name = parts[1].trim();
-                        String department = parts.length > 2 ? parts[2].trim() : "";
-                        String position = parts.length > 3 ? parts[3].trim() : "";
-
-                        employees.add(new Employee(email, name, department, position));
-                        sb.append(email).append(",").append(name);
-                        if (!department.isEmpty()) sb.append(",").append(department);
-                        if (!position.isEmpty()) sb.append(",").append(position);
-                        sb.append("\n");
-                    }
-                }
-
-                employeesTextArea.setText(sb.toString());
-                updateEmployeeCount();
-                showSuccess("✅ Loaded " + employees.size() + " employees from CSV");
-
-            } catch (Exception e) {
-                showError("❌ Error loading CSV: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    private void saveToCSV() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Employee CSV File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            try (FileWriter writer = new FileWriter(file)) {
-                for (Employee employee : employees) {
-                    writer.write(employee.toCSV() + "\n");
-                }
-                showSuccess("✅ Saved " + employees.size() + " employees to CSV");
-            } catch (Exception e) {
-                showError("❌ Error saving CSV: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    private void clearEmployees() {
-        employees.clear();
-        employeesTextArea.clear();
-        updateEmployeeCount();
-        showInfo("Employee list cleared");
-    }
-
-    @FXML
-    private void addSampleData() {
-        String sampleData = "john.doe@company.com,John Doe,IT,Software Developer\n" +
-                "jane.smith@company.com,Jane Smith,HR,Manager\n" +
-                "mike.wilson@company.com,Mike Wilson,Finance,Analyst\n" +
-                "sarah.johnson@company.com,Sarah Johnson,Marketing,Specialist";
-
-        employeesTextArea.setText(sampleData);
-        showInfo("Sample data added");
     }
 
     private void parseEmployeesFromText() {
@@ -422,6 +587,7 @@ public class EmailController {
                 }
             }
         }
+        updateEmployeeStatistics();
     }
 
     private void filterEmployees(String searchText) {

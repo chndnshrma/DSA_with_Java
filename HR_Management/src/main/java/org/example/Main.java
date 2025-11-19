@@ -21,11 +21,12 @@ public class Main extends Application {
 
             System.out.println("FXML loaded successfully");
 
-            // Set up the stage
+            // Set up the stage with larger size for better layout
             primaryStage.setTitle("HR System - Employee Email Manager");
-            primaryStage.setScene(new Scene(root, 800, 900));
-            primaryStage.setMinWidth(800);
-            primaryStage.setMinHeight(900);
+            Scene scene = new Scene(root, 900, 1000); // Increased width and height
+            primaryStage.setScene(scene);
+            primaryStage.setMinWidth(900);
+            primaryStage.setMinHeight(800);
             primaryStage.show();
 
             System.out.println("Application started successfully");
