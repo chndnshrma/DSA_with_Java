@@ -6,146 +6,175 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.controller.EmailController" spacing="15" alignment="TOP_CENTER"
-      style="-fx-padding: 20; -fx-background-color: #f8f9fa;">
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controller.EmailController"
+            style="-fx-background: #f8f9fa; -fx-border-color: transparent;"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
 
-    <!-- Header -->
-    <HBox alignment="CENTER_LEFT" spacing="15">
-        <Label text="🏢 HR System" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
-        <VBox>
-            <Label text="Employee Email Manager" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
-            <Label text="Send bulk emails to your employees" style="-fx-font-size: 12; -fx-text-fill: #95a5a6;"/>
-        </VBox>
-    </HBox>
+    <VBox spacing="15" alignment="TOP_CENTER" style="-fx-padding: 20;">
 
-    <!-- SMTP Configuration -->
-    <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
-        <Label text="📧 Email Server Configuration" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-
-        <GridPane hgap="10" vgap="10">
-            <columnConstraints>
-                <ColumnConstraints prefWidth="120"/>
-                <ColumnConstraints prefWidth="250"/>
-                <ColumnConstraints prefWidth="120"/>
-                <ColumnConstraints prefWidth="100"/>
-            </columnConstraints>
-
-            <rowConstraints>
-                <RowConstraints prefHeight="35"/>
-                <RowConstraints prefHeight="35"/>
-                <RowConstraints prefHeight="35"/>
-            </rowConstraints>
-
-            <!-- Row 1 -->
-            <Label text="SMTP Server:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="smtpHostField" promptText="smtp.gmail.com" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-            <Label text="Port:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="smtpPortField" promptText="587" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
-
-            <!-- Row 2 -->
-            <Label text="Your Email:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="senderEmailField" promptText="your.email@company.com" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
-            <HBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="3">
-                <PasswordField fx:id="senderPasswordField" prefWidth="150"/>
-                <Button text="Test" onAction="#testConnection" fx:id="testConnectionButton" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
-            </HBox>
-
-            <!-- Row 3 -->
-            <Label text="Use SSL:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
-            <CheckBox fx:id="sslCheckBox" text="Enable SSL (use port 465)" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        </GridPane>
-
-        <!-- Quick Setup Buttons -->
-        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;">
-            <Label text="Quick Setup:" style="-fx-font-weight: bold;"/>
-            <Button text="Gmail" onAction="#setupGmail" style="-fx-background-color: #ea4335; -fx-text-fill: white;"/>
-            <Button text="Outlook" onAction="#setupOutlook" style="-fx-background-color: #0078d4; -fx-text-fill: white;"/>
-            <Button text="Yahoo" onAction="#setupYahoo" style="-fx-background-color: #720e9e; -fx-text-fill: white;"/>
-            <Button text="Office 365" onAction="#setupOffice365" style="-fx-background-color: #d83b01; -fx-text-fill: white;"/>
-        </HBox>
-
-        <Label text="💡 For Gmail: Enable 'App Passwords' if 2FA is enabled" style="-fx-font-size: 11; -fx-text-fill: #e74c3c; -fx-font-style: italic;"/>
-    </VBox>
-
-    <!-- Email Content -->
-    <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
-        <Label text="✉️ Email Content" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-
-        <HBox spacing="15" alignment="CENTER_LEFT">
-            <Label text="Subject:" prefWidth="80" style="-fx-font-weight: bold;"/>
-            <TextField fx:id="subjectField" prefWidth="600" promptText="Enter email subject"/>
-        </HBox>
-
-        <HBox spacing="15" alignment="TOP_LEFT">
-            <Label text="Message:" prefWidth="80" style="-fx-font-weight: bold;"/>
-            <VBox spacing="5" prefWidth="600">
-                <TextArea fx:id="messageArea" prefWidth="600" prefHeight="150"
-                          wrapText="true" style="-fx-font-family: 'System'; -fx-font-size: 13;"
-                          promptText="Enter your email message here...&#10;Use placeholders: {{name}}, {{email}}, {{department}}, {{position}}, {{firstName}}"/>
-                <Label text="✨ Placeholders: {{name}} (full name), {{firstName}} (first name only), {{email}}, {{department}}, {{position}}"
-                       style="-fx-font-size: 11; -fx-text-fill: #7f8c8d; -fx-font-style: italic;"/>
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <Label text="🏢 HR System" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <VBox>
+                <Label text="Employee Email Manager" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
+                <Label text="Send bulk emails to your employees" style="-fx-font-size: 12; -fx-text-fill: #95a5a6;"/>
             </VBox>
         </HBox>
+
+        <!-- SMTP Configuration -->
+        <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
+            <Label text="📧 Email Server Configuration" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+
+            <GridPane hgap="15" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="130"/>
+                    <ColumnConstraints prefWidth="300"/>
+                    <ColumnConstraints prefWidth="80"/>
+                    <ColumnConstraints prefWidth="120"/>
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints prefHeight="35"/>
+                    <RowConstraints prefHeight="35"/>
+                    <RowConstraints prefHeight="35"/>
+                </rowConstraints>
+
+                <!-- Row 1 -->
+                <Label text="SMTP Server:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="smtpHostField" promptText="smtp.gmail.com" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Port:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="smtpPortField" promptText="587" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                <!-- Row 2 -->
+                <Label text="Your Email:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="senderEmailField" promptText="your.email@company.com" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="3">
+                    <PasswordField fx:id="senderPasswordField" prefWidth="200"/>
+                    <Button text="Test" onAction="#testConnection" fx:id="testConnectionButton" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                </HBox>
+
+                <!-- Row 3 -->
+                <Label text="Use SSL:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+                <CheckBox fx:id="sslCheckBox" text="Enable SSL (use port 465)" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <!-- Quick Setup Buttons -->
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 15 0 0 0;">
+                <Label text="Quick Setup:" style="-fx-font-weight: bold;"/>
+                <Button text="Gmail" onAction="#setupGmail" style="-fx-background-color: #ea4335; -fx-text-fill: white;"/>
+                <Button text="Outlook" onAction="#setupOutlook" style="-fx-background-color: #0078d4; -fx-text-fill: white;"/>
+                <Button text="Yahoo" onAction="#setupYahoo" style="-fx-background-color: #720e9e; -fx-text-fill: white;"/>
+                <Button text="Office 365" onAction="#setupOffice365" style="-fx-background-color: #d83b01; -fx-text-fill: white;"/>
+            </HBox>
+
+            <Label text="💡 For Gmail: Enable 'App Passwords' if 2FA is enabled" style="-fx-font-size: 11; -fx-text-fill: #e74c3c; -fx-font-style: italic;"/>
+        </VBox>
+
+        <!-- Email Content -->
+        <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
+            <Label text="✉️ Email Content" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Subject:" prefWidth="80" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="subjectField" prefWidth="650" promptText="Enter email subject"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="TOP_LEFT">
+                <Label text="Message:" prefWidth="80" style="-fx-font-weight: bold;"/>
+                <VBox spacing="5" prefWidth="650">
+                    <TextArea fx:id="messageArea" prefWidth="650" prefHeight="200"
+                              wrapText="true" style="-fx-font-family: 'System'; -fx-font-size: 13;"
+                              promptText="Enter your email message here...&#10;Use placeholders: {{name}}, {{email}}, {{department}}, {{position}}, {{firstName}}"/>
+                    <Label text="✨ Placeholders: {{name}} (full name), {{firstName}} (first name only), {{email}}, {{department}}, {{position}}"
+                           style="-fx-font-size: 11; -fx-text-fill: #7f8c8d; -fx-font-style: italic;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Attachments Section -->
+        <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="📎 Email Attachments" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <Button text="Add Files" onAction="#addAttachments" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <Button text="Clear All" onAction="#clearAttachments" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+            </HBox>
+
+            <Label fx:id="attachmentsCountLabel" text="📎 Attachments: 0 files (0 B)" style="-fx-font-weight: bold;"/>
+
+            <Label text="Selected files will be attached to all emails. Maximum total size: 25MB"
+                   style="-fx-font-size: 11; -fx-text-fill: #7f8c8d; -fx-font-style: italic;"/>
+
+            <ListView fx:id="attachmentsListView" prefHeight="120" prefWidth="750"
+                      style="-fx-border-color: #ecf0f1; -fx-border-width: 1; -fx-border-radius: 5;"/>
+        </VBox>
+
+        <!-- Employee Management -->
+        <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="👥 Employee List" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <Button text="Load CSV" onAction="#loadFromCSV" style="-fx-background-color: #9b59b6; -fx-text-fill: white;"/>
+                <Button text="Save CSV" onAction="#saveToCSV" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <Button text="Add Sample" onAction="#addSampleData" style="-fx-background-color: #f39c12; -fx-text-fill: white;"/>
+                <Button text="Clear" onAction="#clearEmployees" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                <Button text="Validate Emails" onAction="#validateEmails" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+                <Button text="Test Email" onAction="#testSingleEmail" style="-fx-background-color: #34495e; -fx-text-fill: white;"/>
+                <TextField fx:id="searchField" promptText="Search employees..." prefWidth="200"/>
+            </HBox>
+
+            <!-- Employee Count and Statistics -->
+            <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 5 0 10 0;">
+                <Label fx:id="employeeCountLabel" text="📊 Total Employees: 0" style="-fx-font-weight: bold; -fx-font-size: 14;"/>
+                <Label fx:id="departmentStatsLabel" text="🏢 Departments: 0" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #3498db;"/>
+                <Label fx:id="validEmailsLabel" text="✅ Valid Emails: 0" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #27ae60;"/>
+                <Label fx:id="invalidEmailsLabel" text="❌ Invalid Emails: 0" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #e74c3c;"/>
+            </HBox>
+
+            <TextArea fx:id="employeesTextArea" prefWidth="750" prefHeight="250"
+                      wrapText="false" style="-fx-font-family: 'Monospaced'; -fx-font-size: 12;"
+                      promptText="Enter employee details (one per line)&#10;Format: email,name,department,position&#10;&#10;Examples:&#10;john@company.com,John Doe,IT,Software Developer&#10;jane@company.com,Jane Smith,HR,Manager&#10;mike@company.com,Mike Wilson,Finance,Analyst"/>
+
+            <TableView fx:id="employeesTableView" prefHeight="300" prefWidth="750">
+                <columns>
+                    <TableColumn text="Email" prefWidth="250">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="email"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Name" prefWidth="150">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="name"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Department" prefWidth="150">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="department"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn text="Position" prefWidth="200">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="position"/>
+                        </cellValueFactory>
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Actions and Status -->
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="🚀 Send Emails to All Employees" onAction="#sendEmails" fx:id="sendButton"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold; -fx-pref-width: 350; -fx-pref-height: 45;"/>
+
+            <ProgressBar fx:id="progressBar" prefWidth="750"/>
+            <Label fx:id="progressLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 12;"/>
+            <Label fx:id="statusLabel" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-pref-width: 750; -fx-alignment: center;"/>
+        </VBox>
+
+        <!-- Footer -->
+        <Label text="Built with ❤️ by Chndn_X_Sailesh"
+               style="-fx-text-fill: #7f8c8d; -fx-font-size: 11; -fx-font-style: italic;"/>
     </VBox>
-
-    <!-- Employee Management -->
-    <VBox spacing="10" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8; -fx-padding: 15;">
-        <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label text="👥 Employee List" style="-fx-font-weight: bold; -fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-            <Button text="Load CSV" onAction="#loadFromCSV" style="-fx-background-color: #9b59b6; -fx-text-fill: white;"/>
-            <Button text="Save CSV" onAction="#saveToCSV" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
-            <Button text="Add Sample" onAction="#addSampleData" style="-fx-background-color: #f39c12; -fx-text-fill: white;"/>
-            <Button text="Clear" onAction="#clearEmployees" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-            <Button text="Validate Emails" onAction="#validateEmails" style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
-            <Button text="Test Email" onAction="#testSingleEmail" style="-fx-background-color: #34495e; -fx-text-fill: white;"/>
-            <TextField fx:id="searchField" promptText="Search employees..." prefWidth="200"/>
-        </HBox>
-
-        <TextArea fx:id="employeesTextArea" prefWidth="750" prefHeight="150"
-                  wrapText="false" style="-fx-font-family: 'Monospaced'; -fx-font-size: 12;"
-                  promptText="Enter employee details (one per line)&#10;Format: email,name,department,position&#10;&#10;Examples:&#10;john@company.com,John Doe,IT,Software Developer&#10;jane@company.com,Jane Smith,HR,Manager&#10;mike@company.com,Mike Wilson,Finance,Analyst"/>
-
-        <Label fx:id="employeeCountLabel" text="📊 Employee Count: 0" style="-fx-font-weight: bold;"/>
-
-        <TableView fx:id="employeesTableView" prefHeight="200" prefWidth="750">
-            <columns>
-                <TableColumn text="Email" prefWidth="200">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="email"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="Name" prefWidth="150">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="name"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="Department" prefWidth="150">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="department"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="Position" prefWidth="200">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="position"/>
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
-    </VBox>
-
-    <!-- Actions and Status -->
-    <VBox spacing="10" alignment="CENTER">
-        <Button text="🚀 Send Emails to All Employees" onAction="#sendEmails" fx:id="sendButton"
-                style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 16; -fx-font-weight: bold; -fx-pref-width: 300; -fx-pref-height: 40;"/>
-
-        <ProgressBar fx:id="progressBar" prefWidth="750"/>
-        <Label fx:id="progressLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 12;"/>
-        <Label fx:id="statusLabel" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-pref-width: 750; -fx-alignment: center;"/>
-    </VBox>
-
-    <!-- Footer -->
-    <Label text="HR System v2.0 - Professional Employee Communication Tool"
-           style="-fx-text-fill: #7f8c8d; -fx-font-size: 11; -fx-font-style: italic;"/>
-</VBox>
+</ScrollPane>

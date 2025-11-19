@@ -4,10 +4,14 @@ import org.example.model.Employee;
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.ArrayList;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
 
 public class EmailService {
 
@@ -45,7 +49,7 @@ public class EmailService {
         }
     }
 
-    public boolean sendEmailToEmployee(Employee employee, String subject, String messageTemplate) {
+    public boolean sendEmailToEmployee(Employee employee, String subject, String messageTemplate, List<File> attachments) {
         try {
             // Clean and validate email address
             String cleanEmail = cleanEmailAddress(employee.getEmail());
@@ -65,7 +69,33 @@ public class EmailService {
 
             // Personalize the message
             String personalizedMessage = personalizeMessage(messageTemplate, employee);
-            message.setText(personalizedMessage);
+
+            // Create the message part for text
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(personalizedMessage);
+
+            // Create multipart message
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+
+            // Add attachments if any
+            if (attachments != null && !attachments.isEmpty()) {
+                for (File file : attachments) {
+                    if (file.exists() && file.isFile()) {
+                        MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+                        DataSource source = new FileDataSource(file);
+                        attachmentBodyPart.setDataHandler(new DataHandler(source));
+                        attachmentBodyPart.setFileName(file.getName());
+                        multipart.addBodyPart(attachmentBodyPart);
+                        System.out.println("✅ Attached file: " + file.getName());
+                    } else {
+                        System.err.println("❌ File not found: " + file.getAbsolutePath());
+                    }
+                }
+            }
+
+            // Set the complete message parts
+            message.setContent(multipart);
 
             Transport.send(message);
             System.out.println("✅ Successfully sent email to: " + cleanEmail);
@@ -78,7 +108,7 @@ public class EmailService {
     }
 
     public EmailSendResult sendBulkEmails(List<Employee> employees, String subject, String messageTemplate,
-                                          ProgressCallback progressCallback) {
+                                          List<File> attachments, ProgressCallback progressCallback) {
         int total = employees.size();
         int successful = 0;
         int failed = 0;
@@ -113,7 +143,7 @@ public class EmailService {
                 progressCallback.onProgress(progress, "Sending to: " + employee.getName());
             }
 
-            boolean success = sendEmailToEmployee(employee, subject, messageTemplate);
+            boolean success = sendEmailToEmployee(employee, subject, messageTemplate, attachments);
 
             if (success) {
                 successful++;
