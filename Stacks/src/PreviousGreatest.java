@@ -8,7 +8,7 @@ public class PreviousGreatest {
     public static void prevGreater(int arr[]) {
         for(int i = 0; i < arr.length; i++){
             int pg = -1;
-            for(int j = i-1; j >= 0; j--) {
+            for(int j = i-1; j >= 0;j--) {
                 if (arr[j] > arr[i]) {
                     pg = arr[j];
                     break;
