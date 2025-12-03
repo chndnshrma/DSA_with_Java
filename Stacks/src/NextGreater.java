@@ -17,7 +17,7 @@ public class NextGreater {
             while(stack.isEmpty() == false && stack.peek() <= arr[i]){
                 stack.pop();
             }
-            res[i] = stack.isEmpty() ? -1 : stack.peek();
+            res[i]= stack.isEmpty() ? -1 : stack.peek();
             stack.push(arr[i]);
         }
         for(int i = 0; i<n; i++){
