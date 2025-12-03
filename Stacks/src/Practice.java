@@ -9,7 +9,7 @@ public class Practice {
             s.push(j);
         }
 
-        for (int i = 0; i < arr.length; i++) {
+        while (!s.isEmpty()) {
             System.out.print(s.pop() + " ");
         }
     }
