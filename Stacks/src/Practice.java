@@ -5,7 +5,7 @@ public class Practice {
         int[] arr = {1, 2, 3, 4, 5};
 
         Stack<Integer> s = new Stack<>();
-        for (int j : arr) {
+        for (int j : arr){
             s.push(j);
         }
 
