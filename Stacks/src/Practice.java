@@ -9,8 +9,8 @@ public class Practice {
             s.push(j);
         }
 
-        while (!s.isEmpty()) {
-            System.out.print(s.pop() + " ");
+        while (!s.isEmpty()){
+            System.out.print(s.pop()+" ");
         }
     }
 }
