@@ -2,15 +2,14 @@ import java.util.Stack;
 
 public class Practice {
     public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 4,5};
+    String str = "toramaikechodoaaaiiyeee";
+    removeConsecutiveDuplicates(str);
+    }
 
-        Stack<Integer> s=new Stack<>();
-        for (int j:arr){
-            s.push(j);
-        }
+    public static String removeConsecutiveDuplicates(String s) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(s.toCharArray());
 
-        while (!s.isEmpty()){
-            System.out.print(s.pop()+" ");
-        }
+
     }
 }
