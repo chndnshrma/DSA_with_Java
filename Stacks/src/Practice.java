@@ -8,7 +8,7 @@ public class Practice {
 
     public static String removeConsecutiveDuplicates(String s) {
         Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(s.toCharArray());
+        stack.push(s.toCharArray()) ;
 
 
     }
