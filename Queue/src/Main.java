@@ -19,7 +19,7 @@ public class Main {
             stack.push(q.poll());
         }
 
-        while(!stack.isEmpty()) {
+        while(!stack.isEmpty()){
             q.offer(stack.pop());
         }
         for(int i = 0; i < q.size() - k; i++){
