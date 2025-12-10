@@ -9,10 +9,12 @@ public class Main {
         q.offer(40);
         q.offer(50);
 
-        removeElements(q,3);
+        System.out.println(removeElements(q,3));
     }
-    public static void removeElements(Queue<Integer> q, int k) {
+    public static Queue<Integer> removeElements(Queue<Integer> q, int k) {
+
         Deque<Integer> stack = new ArrayDeque<>();
+
         for(int i = 0; i < k; i++) {
             stack.push(q.poll());
         }
@@ -20,15 +22,9 @@ public class Main {
         while(!stack.isEmpty()) {
             q.offer(stack.pop());
         }
-        for(int i = 0; i <= q.size() - k; i++){
-            stack.push(q.poll());
-
+        for(int i = 0; i < q.size() - k; i++){
+            q.offer(q.poll());
         }
-        while(!stack.isEmpty()) {
-            q.offer(stack.pop());
-        }
-        for(int e : q){
-            System.out.print(e + " ");
-        }
+        return q;
     }
 }
