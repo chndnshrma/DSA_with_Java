@@ -10,7 +10,7 @@ public class Practice {
         if (s == null || s.isEmpty()) {
             return "";
         }
-
+        Deq
         int n = s.length();
 
         Stack<Character> st = new Stack<>();
