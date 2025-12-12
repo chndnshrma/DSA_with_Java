@@ -11,7 +11,7 @@ public class Main {
         Deque<Integer> dq = new LinkedList<Integer>();
 
         // Process first K elements
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < k; i++){
             while (!dq.isEmpty() && arr[i] >= arr[dq.peekLast()])
                 dq.removeLast();
 
