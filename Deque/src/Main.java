@@ -7,7 +7,7 @@ public class Main {
         int k = 3;
         printMax(arr, k);
     }
-    static void printMax(int arr[], int k) {
+    static void printMax(int arr[], int k){
         Deque<Integer> dq = new LinkedList<Integer>();
 
         // Process first K elements
