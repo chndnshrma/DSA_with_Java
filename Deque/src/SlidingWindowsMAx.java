@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class SlidingWindowsMAx {
     public static void main(String[] args){
-        int[] arr = {20,25,12,4,15,41,12};
+        int[] arr ={20,25,12,4,15,41,12};
         int k = 3;
         System.out.println(maxOfSubarrays(arr,k));
     }
