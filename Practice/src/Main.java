@@ -4,12 +4,13 @@ public class Main {
     public static void main(String[] args) {
         int[] arr = {3,7,2,9,4};
         String str = "Chandan";
+        int num = 29;
 
         System.out.println(printMax(arr));
         System.out.println(printMin(arr));
         System.out.println(Arrays.toString(revArray(arr)));
-
         revStr(str);
+        System.out.println(isPrime(num));
 
     }
     //1.to find the max element of array
@@ -60,5 +61,18 @@ public class Main {
         }
         String reversed = new String(chr);
         System.out.println(reversed);
+    }
+    //5.to check prime number
+    public static boolean isPrime(int num){
+        if(num <= 1) return false;
+        if(num == 2) return true;
+        if(num % 2 == 0) return false;
+
+        for(int i = 3; i <= Math.sqrt(num); i+=2){
+            if(num % i == 0){
+                return false;
+            }
+        }
+        return true;
     }
 }
