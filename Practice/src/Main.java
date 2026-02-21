@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -11,6 +12,7 @@ public class Main {
         System.out.println(Arrays.toString(revArray(arr)));
         revStr(str);
         System.out.println(isPrime(num));
+        printPrime(num);
 
     }
     //1.to find the max element of array
@@ -74,5 +76,17 @@ public class Main {
             }
         }
         return true;
+    }
+    //6.print all prime numbers upto n
+    public static void printPrime(int n) {
+        ArrayList<Integer> lst = new ArrayList<>();
+        for(int i = 2; i<n; i++){
+            if(isPrime(i)){
+                lst.add(i);
+            }
+        }
+        for(int e: lst){
+            System.out.print(e + " ");
+        }
     }
 }
