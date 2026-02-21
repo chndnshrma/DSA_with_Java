@@ -1,26 +1,23 @@
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 public class maxFrequent {
     public static void main(String[] args) {
-        int[] arr = {13,20,32,54,67,43,90};
-        kLargestElement(arr, 3);
-    }
-    public static void kLargestElement(int[] arr, int k){
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        for(int i = 0;i<k; i++){
-            pq.add(i);
-        }
-        for(int i = k; i<arr.length; i++){
-            if(arr[i] > pq.peek()){
-                pq.poll();
-                pq.add(arr[i]);
-            }
-        }
-        for(int i = 0; i<k; i++){
-            System.out.print(pq.poll()+ " ");
+        int arr[] = {4,2,5,2,3,5,2,7};
+
+        int start = 0;
+        int end = arr.length - 1;
+
+        while(start < end){
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+
+            start++;
+            end--;
         }
 
+        for(int i : arr){
+            System.out.print(i + " ");
+        }
     }
 }
 
