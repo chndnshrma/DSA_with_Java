@@ -3,9 +3,13 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] arr = {3,7,2,9,4};
+        String str = "Chandan";
+
         System.out.println(printMax(arr));
         System.out.println(printMin(arr));
         System.out.println(Arrays.toString(revArray(arr)));
+
+        revStr(str);
 
     }
     //1.to find the max element of array
@@ -43,6 +47,18 @@ public class Main {
     }
     //4. Reverse a string manually
     public static void revStr(String str){
+        char[] chr = str.toCharArray();
+        int start = 0;
+        int end = chr.length -1;
+        while(start<end){
+            char temp = chr[start];
+            chr[start] = chr[end];
+            chr[end] = temp;
 
+            start++;
+            end--;
+        }
+        String reversed = new String(chr);
+        System.out.println(reversed);
     }
 }
