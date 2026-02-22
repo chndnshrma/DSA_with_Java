@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +14,14 @@ public class Main {
         revStr(str);
         System.out.println(isPrime(num));
         printPrime(num);
-
+        System.out.println("Factorial : " + fact(5));
+        for(int i = 0; i<10; i++) {
+            System.out.print(fiboNum(i) + " ");
+        }
+        System.out.println();
+        System.out.println(palindrome("malayalam"));
+        countChar("Chandan");
+        System.out.println();
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -88,5 +96,50 @@ public class Main {
         for(int e: lst){
             System.out.print(e + " ");
         }
+        System.out.println();
+    }
+    //7. find the factorial of a number using recursion
+    public static int fact(int n){
+        if(n == 0 || n == 1) return 1;
+        return n* fact(n-1);
+    }
+    //8. Find the Fibonacci number at position n
+    public static int fiboNum(int n){
+        if(n <= 1) return n;
+        return fiboNum(n-1) + fiboNum(n-2);
+    }
+    //9. check if a string is palindrome
+    public static boolean palindrome(String str){
+        char[] chr = str.toLowerCase().toCharArray();
+        for(int i = 0; i<chr.length/2; i++){
+            int j = chr.length - 1 - i;
+            if(chr[i] != chr[j]){
+                return false;
+            }
+        }
+        return true;
+    }
+    //10. To count the frequency of each char in a String
+    public static void countChar(String str){
+        char[] chr = str.toCharArray();
+        int count = 1;
+        for(int i = 0; i<chr.length; i++){
+            if(chr[i] == '0'){
+                continue;
+            }
+            for(int j = i+1; j<chr.length;j++){
+                if(chr[i] == chr[j]){
+                    count++;
+                    chr[j] = '0';
+                }
+            }
+            System.out.print(chr[i] + ":" + count + " ");
+        }
+    }
+    //11.Find the second largest element in an array
+    public static int secondLargest(int[] arr){
+        int ans = 0;
+
+        return ans;
     }
 }
