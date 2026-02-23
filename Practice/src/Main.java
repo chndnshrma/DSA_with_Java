@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        int[] arr = {3,7,2,9,4};
+        int[] arr = {3,7,2,9,4,2,7};
         String str = "Chandan";
         int num = 29;
 
@@ -23,6 +23,8 @@ public class Main {
         countChar("Chandan");
         System.out.println();
         System.out.println(secondLargest(arr));
+        System.out.println(Arrays.toString(removeDuplicate(arr)));
+        System.out.println(Arrays.toString((mergeToSort(arr,arr))));
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -154,5 +156,50 @@ public class Main {
             }
         }
         return secondLargest;
+    }
+    //12. Remove duplicate from an array
+    public static int[] removeDuplicate(int[] arr){
+        if(arr.length == 0) return arr;
+        Arrays.sort(arr);
+
+        int uniqueCount = 1;
+        for(int i = 1; i< arr.length; i++){
+            if(arr[i] != arr[i-1]){
+                uniqueCount++;
+            }
+        }
+        int[] result = new int[uniqueCount];
+        result[0] = arr[0];
+        int index = 1;
+        for(int i = 1; i<arr.length;i++){
+            if(arr[i] != arr[i-1]) {
+                result[index++] = arr[i];
+            }
+        }
+        return result;
+    }
+    //13. Merge Sorted array into one sorted array
+    public static int[] mergeToSort(int[] arr1, int[] arr2){
+        int n1 = arr1.length;
+        int n2 = arr2.length;
+        int[] result = new int[n1+n2];
+        int i =0, j = 0, k = 0;
+            //traversing both arrays
+        while(i<n1 && j<n2){
+            if(arr1[i] <= arr2[j]){
+                result[k++] = arr1[i++];
+            }else{
+                result[k++] = arr2[j++];
+            }
+        }
+            //store remaining elements of the first array
+        while(i < n1){
+            result[k++] = arr1[i++];
+        }
+            //Storing remaining elements of the second array
+        while(j<n2){
+            result[k++] = arr2[j++];
+        }
+        return result;
     }
 }
