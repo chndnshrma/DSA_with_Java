@@ -22,6 +22,7 @@ public class Main {
         System.out.println(palindrome("malayalam"));
         countChar("Chandan");
         System.out.println();
+        System.out.println(secondLargest(arr));
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -136,10 +137,22 @@ public class Main {
             System.out.print(chr[i] + ":" + count + " ");
         }
     }
-    //11.Find the second largest element in an array
+    //11.Find the second-largest element in an array
     public static int secondLargest(int[] arr){
-        int ans = 0;
+        if(arr == null || arr.length < 2){
+            throw new IllegalArgumentException("Array must have at least two elements!");
+        }
+        int largest = Integer.MIN_VALUE;
+        int secondLargest = Integer.MIN_VALUE;
 
-        return ans;
+        for(int num : arr){
+            if(num > largest){
+                secondLargest = largest;
+                largest = num;
+            }else if(num > secondLargest && num != largest ){
+                secondLargest = num;
+            }
+        }
+        return secondLargest;
     }
 }
