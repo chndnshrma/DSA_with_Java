@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        int[] arr = {3,7,2,9,4,2,7};
+        int[] arr = {1,2,3,4,5,6,7,8,9,10};
         String str = "Chandan";
         int num = 29;
 
@@ -25,6 +25,7 @@ public class Main {
         System.out.println(secondLargest(arr));
         System.out.println(Arrays.toString(removeDuplicate(arr)));
         System.out.println(Arrays.toString((mergeToSort(arr,arr))));
+        System.out.println(binarySearch(arr,7));
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -201,5 +202,25 @@ public class Main {
             result[k++] = arr2[j++];
         }
         return result;
+    }
+    //14.Binary search in sorted array
+    public static int binarySearch(int[] arr, int target){
+        int left = 0;
+        int right = arr.length - 1;
+
+        System.out.println("Searching for " + target + " in Array" );
+
+        while(left <= right){
+            int mid = (left+right)/2;
+            if(arr[mid] == target){
+                return mid;
+            }
+            if(arr[mid] < target){
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+        return -1;
     }
 }
