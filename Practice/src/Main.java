@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,6 +25,8 @@ public class Main {
         System.out.println(Arrays.toString(removeDuplicate(arr)));
         System.out.println(Arrays.toString((mergeToSort(arr,arr))));
         System.out.println(binarySearch(arr,7));
+        System.out.println("Missing Number: " + findMissingNum(arr,10));
+        System.out.println(checkAnagram("silent","listen"));
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -222,5 +223,28 @@ public class Main {
             }
         }
         return -1;
+    }
+    //15. Find the missing number from array containing 1 to n
+    public static int findMissingNum(int[] arr, int n){
+        int expectedSum = n*(n+1)/2;
+        int actualSum = 0;
+        for(int num: arr){
+            actualSum += num;
+        }
+        return expectedSum - actualSum;
+    }
+    //16. Check if two strings are anagrams of each other
+    public static boolean checkAnagram(String str1, String str2){
+        if(str1.length() != str2.length()){
+            return false;
+        }
+        String lowerCaseStr1 = str1.toLowerCase();
+        String lowerCaseStr2 = str2.toLowerCase();
+        char[] strChar1 = lowerCaseStr1.toCharArray();
+        char[] strChar2 = lowerCaseStr2.toCharArray();
+        Arrays.sort(strChar1);
+        Arrays.sort(strChar2);
+
+        return Arrays.equals(strChar1,strChar2);
     }
 }
