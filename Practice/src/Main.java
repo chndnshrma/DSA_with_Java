@@ -4,6 +4,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] arr = {1,2,3,4,5,6,7,8,9,10};
+        int[] arr2 = {4,5,2,6,2,3,5,1,3,6};
         String str = "Chandan";
         int num = 29;
 
@@ -27,6 +28,7 @@ public class Main {
         System.out.println(binarySearch(arr,7));
         System.out.println("Missing Number: " + findMissingNum(arr,10));
         System.out.println(checkAnagram("silent","listen"));
+        System.out.println(Arrays.toString(arrayIntersection(arr, arr2)));
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -246,5 +248,35 @@ public class Main {
         Arrays.sort(strChar2);
 
         return Arrays.equals(strChar1,strChar2);
+    }
+    //17. to find the intersection of two arrays
+    public static int[] arrayIntersection(int[] arr1, int[] arr2) {
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        ArrayList<Integer> result = new ArrayList<>();
+
+        int j = 0, k = 0;
+        // FIX: j must check arr1.length
+        while (j < arr1.length && k < arr2.length) {
+            if (arr1[j] < arr2[k]) {
+                j++;
+            } else if (arr1[j] > arr2[k]) {
+                k++;
+            } else {
+                // Logic for unique elements
+                if (result.isEmpty() || result.get(result.size() - 1) != arr1[j]) {
+                    result.add(arr1[j]);
+                }
+                j++;
+                k++;
+            }
+        }
+
+        // Convert to array
+        int[] intersection = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            intersection[i] = result.get(i);
+        }
+        return intersection;
     }
 }
