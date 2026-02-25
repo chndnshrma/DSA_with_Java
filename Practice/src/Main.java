@@ -29,11 +29,13 @@ public class Main {
         System.out.println("Missing Number: " + findMissingNum(arr,10));
         System.out.println(checkAnagram("silent","listen"));
         System.out.println(Arrays.toString(arrayIntersection(arr, arr2)));
-        System.out.println(Arrays.toString(moveZeroesEnd(arr2)));
+        System.out.println(Arrays.toString(moveZeroes(arr2)));
 
         String name = "chandan";
         String result = name.substring(0,1).toUpperCase() + name.substring(1);
         System.out.println(result);
+
+        System.out.println(Arrays.toString(moveZeroes(arr2)));
 
     }
     //1.to find the max element of array
@@ -286,9 +288,17 @@ public class Main {
         return intersection;
     }
     //18.Move all zeroes to the end while maintaining order
-    public static int[] moveZeroesEnd(int[] arr){
-
-        return null;
+    public static int[] moveZeroes(int[] arr) {
+        int insertPos = 0;
+        for (int num : arr) {
+            if (num != 0) {
+                arr[insertPos++] = num;
+            }
+        }
+        while (insertPos < arr.length) {
+            arr[insertPos++] = 0;
+        }
+        return arr;
     }
 
 }
