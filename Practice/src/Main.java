@@ -31,11 +31,12 @@ public class Main {
         System.out.println(Arrays.toString(arrayIntersection(arr, arr2)));
         System.out.println(Arrays.toString(moveZeroes(arr2)));
 
-        String name = "chandan";
+        String name = "hello";
         String result = name.substring(0,1).toUpperCase() + name.substring(1);
         System.out.println(result);
 
         System.out.println(Arrays.toString(moveZeroes(arr2)));
+        System.out.println(notRepeatingChar("kalluaK"));
 
     }
     //1.to find the max element of array
@@ -300,5 +301,19 @@ public class Main {
         }
         return arr;
     }
+    //19.Find the first non-repeating character in an array
+    public static String notRepeatingChar(String str) {
+        StringBuilder result = new StringBuilder();
 
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+
+            // If it only appears once in the entire string
+            if (str.indexOf(c) == str.lastIndexOf(c)) {
+                result.append(c); // Add it to our collection instead of returning
+            }
+        }
+
+        return result.toString();
+    }
 }
