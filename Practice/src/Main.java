@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         int[] arr = {1,2,3,4,5,6,7,8,9,10};
-        int[] arr2 = {4,5,2,6,2,3,5,1,3,6};
+        int[] arr2 = {0,5,0,6,0,3,5,1,3,6};
         String str = "Chandan";
         int num = 29;
 
@@ -29,6 +29,12 @@ public class Main {
         System.out.println("Missing Number: " + findMissingNum(arr,10));
         System.out.println(checkAnagram("silent","listen"));
         System.out.println(Arrays.toString(arrayIntersection(arr, arr2)));
+        System.out.println(Arrays.toString(moveZeroesEnd(arr2)));
+
+        String name = "chandan";
+        String result = name.substring(0,1).toUpperCase() + name.substring(1);
+        System.out.println(result);
+
     }
     //1.to find the max element of array
     public static int printMax(int[] arr){
@@ -279,4 +285,10 @@ public class Main {
         }
         return intersection;
     }
+    //18.Move all zeroes to the end while maintaining order
+    public static int[] moveZeroesEnd(int[] arr){
+
+        return null;
+    }
+
 }
