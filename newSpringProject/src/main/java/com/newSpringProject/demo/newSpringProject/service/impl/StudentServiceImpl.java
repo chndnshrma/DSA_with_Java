@@ -53,15 +53,8 @@ public class StudentServiceImpl implements StudentService {
         // 1. Fetch the existing record
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Student does not exist with ID: " + id));
-
-        // 2. Map DTO to Entity (This might accidentally set student.id to null)
         modelMapper.map(addStudentRequestDto, student);
-
-        // 3. FIX: Force the ID back to the path variable 'id'
-        // This protects the identity of the record
         student.setId(id);
-
-        // 4. Save the updated entity
         student = studentRepository.save(student);
         return modelMapper.map(student, StudentDto.class);
     }
