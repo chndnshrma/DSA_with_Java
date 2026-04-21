@@ -3,5 +3,6 @@
         "lib/**/*.jar",
         "/Users/abc/lib/javafx/javafx-sdk-26/lib/*.jar",
         "/Users/**/*.jar"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "disabled"
 }
