@@ -1,4 +1,4 @@
-class practice {
+class selection_sort {
     public static void main(String[] args) {
        int[] arr = {15, 9, 20, 3, 56, 42, 12};
         int n = arr.length;
