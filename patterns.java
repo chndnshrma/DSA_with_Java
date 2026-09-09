@@ -8,18 +8,8 @@ class patterns {
             System.out.print(e + " ");
         }
         System.out.println();
-
-        System.out.println(removeDuplicate(arr));
-
     }
-    public static int removeDuplicate(int[] arr) {
-        int i = 0;
-        for ( int j = 1; j < arr.length; j++){
-            if (arr[j] != arr[i]) {
-                i++;
-                arr[i] = arr[j];
-            }
-        }
-        return i + 1;
+    public static int[] rotateArray(int[] arr, int k) {
+        
     }
 }
