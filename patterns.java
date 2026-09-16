@@ -1,15 +1,28 @@
-import java.util.Arrays;
-import java.util.HashSet;
-
 class patterns {
     public static void main(String[] args) {
-        int[] arr = {1,1,2,2,3,3,4,4,5,5,5};
+        int[] arr = {1,2,3,4,5};
         for (int e : arr) {
-            System.out.print(e + "");
+            System.out.print(e + " ");
         }
         System.out.println();
+
+        rotateArray(arr);
+
+        for (int e : arr) {
+            System.out.print(e + " ");
+        }
+        System.out.println();
+
     }
-    public static int[] rotateArray(int[] arr, int k) {
-        retutn int k;
+    public static int[] rotateArray(int[] arr) {
+        int temp = arr[0];
+        int n = arr.length;
+
+        for (int i = 1; i<n; i++) {
+            arr[i-1] = arr[i];
+        }
+        arr[n-1] = temp;
+
+        return arr;
     }
 }
