@@ -21,7 +21,6 @@ class patterns {
             arr[i-1] = arr[i];
         }
         arr[n-1] = temp;
-
         return arr;
     }
 }
