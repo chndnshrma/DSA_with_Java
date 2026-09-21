@@ -16,7 +16,6 @@ class patterns {
     public static int[] rotateArray(int[] arr) {
         int temp = arr[1];
         int n = arr.length;
-
         for (int i = 1; i<n; i++) {
             arr[i-1] = arr[i];
         }
