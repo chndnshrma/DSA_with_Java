@@ -5,7 +5,7 @@ class patterns {
             System.out.print(e + " ");
         }
         System.out.println();
-        rotateArray(arr, 3);
+        rotateArray(arr, 1);
 
         for (int e : arr) {
             System.out.print(e + " ");
