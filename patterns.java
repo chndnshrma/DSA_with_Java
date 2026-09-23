@@ -13,44 +13,22 @@ class patterns {
         System.out.println();
 
     }
-    public static int[] rotateArray(int[] arr, int d) {
+    public static int[] rotateArray(int[] arr, int k) {
         int n = arr.length;
-        d = d % n;
-        int[] temp = new int[d];
-        
-        for (int i = 0; i < d; i++) {
-            temp[i] = arr[i];
-        }
-
-        for (int i = d; i < n ; i++) {
-            arr[i-d] = arr[i];
-        }
-
-        for (int i = n-d; i < n; i++) {
-            arr[i] = temp[i - (n-d)];
-        }
-
+        reverse(arr, 0, n-k-1);
+        reverse(arr, n-k, n-1);
+        reverse(arr, 0, n - 1);
         return arr;
     }
-}
-
-class Solution {
-    public void rotate(int[] nums, int k) {
-        int n = nums.length;
-        if (n == 0) {
-            return;
-        }
-        k = k % n;
-        int[] temp = new int[k];
-
-        for (int i = 0; i < k; i++) {
-            temp[i] = nums[n - k + i];
-        }
-        for (int i = n - k - 1; i >= 0; i--) {
-            nums[i + k] = nums[i];
-        }
-        for (int i = 0; i < k; i++) {
-            nums[i] = temp[i];
+    public static void reverse(int[] arr, int start, int end) {
+        while (start <= end) {
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
         }
     }
 }
+
+   
