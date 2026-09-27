@@ -17,6 +17,7 @@ public class maxconsecutiveones {
         for (int i = 0; i<arr.length; i++) {
             
         }
+        
         return max;
     }
 }
