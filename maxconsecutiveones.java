@@ -1,32 +1,23 @@
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class maxconsecutiveones {
     public static void main(String[] args) {
-        int[] nums = {3, 0, 1};
-        System.out.println(missingNumber(nums));
+        int[] arr1 = {6,3,5};
+        int[] arr2 = {2,5,7};
+        Set<Integer> merged = uniteArray(arr1, arr2);
+        System.out.println(merged);
     }
-    public static int missingNumber(int[] arr) {
-        for (int i = 0; i<arr.length; i++) {
-            boolean found = false;
-            for (int value : arr) {
-                if (value == i) {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found) {
-                return i;
-            }
+    public static Set<Integer> uniteArray(int[] arr1, int[] arr2) {
+        Set<Integer> result = new HashSet<>();
+
+        for (Integer e : arr1) {
+            result.add(e);
         }
-        return -1;
+        for (Integer e : arr2) {
+            result.add(e);
+        }
 
-
-        // Arrays.sort(arr);
-        // for (int i = 0; i<arr.length; i++) {
-        //     if (arr[i] != i) {
-        //         return i;
-        //     }
-        // }
-        // return arr.length;
+        return result;
     }
 }
