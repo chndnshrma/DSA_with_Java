@@ -15,6 +15,7 @@ public class hello {
                 max = nums[i];
                 ans.add(max);
             }
+            
         }
         return ans;
     }
