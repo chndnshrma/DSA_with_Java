@@ -4,7 +4,6 @@ public class arrangearraybysign {
     public static void main(String[] args) {
         int[] arr = {3,1,-2,-5,2,-4};
         System.out.println(Arrays.toString(rearrangeBySign(arr)));
-
     }
     public static int[] rearrangeBySign(int[] nums) {
         int n = nums.length;
