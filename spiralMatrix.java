@@ -39,6 +39,7 @@ public class spiralMatrix {
                 left++;
             }
         }
+        
         return result;
     }
 }
