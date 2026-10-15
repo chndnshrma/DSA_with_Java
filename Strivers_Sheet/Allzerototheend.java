@@ -1,3 +1,4 @@
+package Strivers_Sheet;
 
 class Allzerototheend {
     public static void main(String[] args) {

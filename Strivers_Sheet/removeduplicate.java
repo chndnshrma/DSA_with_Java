@@ -1,3 +1,4 @@
+package Strivers_Sheet;
 public class removeduplicate {
     public static void main(String[] args) {
         int[] arr = {1,1,2,3,4,4,4,5,5,2,1,9};
