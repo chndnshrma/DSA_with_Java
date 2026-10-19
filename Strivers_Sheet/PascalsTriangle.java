@@ -8,8 +8,6 @@ public class PascalsTriangle {
 	}
     public static List<List<Integer>> generate(int numRows) {
         List<List<Integer>> result = new ArrayList<>();
-
-
         return result;
     }
     public static long nCr(int n, int r) {
