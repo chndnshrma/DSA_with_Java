@@ -17,6 +17,7 @@ public class PascalsTriangle {
             res = res * (n-i) ;
             res = res/(i+1);
         }
+        
         return res;
     }
     public static int[] generateRow(int row) {
