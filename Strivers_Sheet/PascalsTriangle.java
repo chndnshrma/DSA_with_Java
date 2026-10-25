@@ -5,6 +5,7 @@ public class PascalsTriangle {
 	public static void main(String[] args) {
 		int n = 5;
         System.out.println(generate(n));
+        
     }
     
     public static List<List<Integer>> generate(int numRows) {
