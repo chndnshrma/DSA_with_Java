@@ -18,7 +18,6 @@ public class PascalsTriangle {
                 value = value * (row - col) / (col + 1);
             }
             ans.add(ansRow);
-
         }
         
         return ans;
