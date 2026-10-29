@@ -17,7 +17,6 @@ public class PascalsTriangle {
             }
             ans.add(ansRow);
         }
-        
         return ans;
     }
 }
